@@ -19,10 +19,15 @@ async function run() {
         app.get('/services', async (req, res) => {
             const query = {}
             const cursor = servicesCollection.find(query);
+            const services = await cursor.sort({ date: -1 }).limit(3).toArray();
+            res.send(services);
+        })
+        app.get('/allservices', async (req, res) => {
+            const query = {}
+            const cursor = servicesCollection.find(query);
             const services = await cursor.toArray();
             res.send(services);
         })
-
         app.get('/reviews', async (req, res) => {
             let query = {}
             if (req.query.service) {
@@ -43,7 +48,7 @@ async function run() {
                 }
             }
             const cursor = reviewCollection.find(query);
-            const myreviews = await cursor.toArray();
+            const myreviews = await cursor.sort({ date: -1 }).toArray();
             res.send(myreviews);
         })
 
